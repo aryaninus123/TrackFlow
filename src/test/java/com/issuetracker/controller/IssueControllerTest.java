@@ -70,9 +70,11 @@ class IssueControllerTest {
         testUser.setRoles(roles);
         testUser = userRepository.save(testUser);
 
-        // Generate token
+        // Generate token with UserDetailsImpl
+        com.issuetracker.security.UserDetailsImpl userDetails = 
+            com.issuetracker.security.UserDetailsImpl.build(testUser);
         Authentication auth = new UsernamePasswordAuthenticationToken(
-                testUser.getUsername(),
+                userDetails,
                 null,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
         );

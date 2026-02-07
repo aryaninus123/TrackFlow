@@ -38,11 +38,14 @@ describe('App', () => {
     });
   });
 
-  test('checks localStorage for existing session', () => {
+  test('checks localStorage for existing session', async () => {
     render(<App />);
     
-    // Should check for token and user data
-    expect(localStorageMock.getItem).toHaveBeenCalledWith('token');
-    expect(localStorageMock.getItem).toHaveBeenCalledWith('user');
+    // Wait for useEffect to execute
+    await waitFor(() => {
+      // Should check for token and user data
+      expect(localStorageMock.getItem).toHaveBeenCalledWith('token');
+      expect(localStorageMock.getItem).toHaveBeenCalledWith('user');
+    });
   });
 });

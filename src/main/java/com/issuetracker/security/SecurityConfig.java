@@ -53,9 +53,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // #region agent log
-        try { java.nio.file.Files.write(java.nio.file.Paths.get("/app/debug.log"), (new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(java.util.Map.of("sessionId","debug-session","hypothesisId","A,B,C","location","SecurityConfig.java:56","message","Security filter chain configured","data",java.util.Map.of("swaggerPatternsConfigured",true,"timestamp",System.currentTimeMillis()),"timestamp",System.currentTimeMillis()))+"\n").getBytes(), java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.APPEND); } catch(Exception e) {}
-        // #endregion
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

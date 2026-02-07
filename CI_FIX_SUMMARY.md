@@ -25,7 +25,15 @@
   - Async/await handling for component loading
   - Better test structure with describe/beforeEach
 
-### 3. CI Workflow Optimization
+### 3. Backend Test Authentication Issues
+**Problem:** Tests were failing with ClassCastException when trying to cast String to UserDetailsImpl.
+
+**Solution:**
+- **Fixed** `IssueControllerTest` to use `UserDetailsImpl.build(testUser)` when creating Authentication
+- **Fixed** `AuthControllerTest` expectation for duplicate username (should be 4xx, not 5xx)
+- **Removed** debug logging code from `SecurityConfig` that could cause test failures
+
+### 4. CI Workflow Optimization
 **Problem:** CI was setting up unnecessary PostgreSQL service (tests use H2).
 
 **Solution:**
@@ -37,8 +45,11 @@
 
 1. `src/test/resources/application-test.yml` - Enhanced test configuration
 2. `src/main/resources/application-test.yml` - Deleted (was conflicting)
-3. `frontend/src/App.test.js` - Improved test suite
+3. `frontend/src/App.test.js` - Improved test suite with async handling
 4. `.github/workflows/ci-cd.yml` - Optimized CI workflow
+5. `src/test/java/com/issuetracker/controller/IssueControllerTest.java` - Fixed Authentication to use UserDetailsImpl
+6. `src/test/java/com/issuetracker/controller/AuthControllerTest.java` - Fixed status code expectation
+7. `src/main/java/com/issuetracker/security/SecurityConfig.java` - Removed debug logging code
 
 ## Testing Strategy
 
