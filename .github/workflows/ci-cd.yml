@@ -11,21 +11,6 @@ jobs:
     name: Test Backend
     runs-on: ubuntu-latest
     
-    services:
-      postgres:
-        image: postgres:15-alpine
-        env:
-          POSTGRES_DB: testdb
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,7 +23,7 @@ jobs:
           cache: maven
       
       - name: Run tests
-        run: mvn test
+        run: mvn test -Dspring.profiles.active=test
       
       - name: Build application
         run: mvn clean package -DskipTests
