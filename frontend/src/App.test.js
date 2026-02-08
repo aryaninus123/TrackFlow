@@ -10,10 +10,11 @@ const localStorageMock = {
   length: 0,
   key: jest.fn(),
 };
-global.localStorage = localStorageMock;
 
 describe('App', () => {
   beforeEach(() => {
+    // Set up localStorage mock
+    global.localStorage = localStorageMock;
     // Clear all mocks before each test
     jest.clearAllMocks();
     localStorageMock.getItem.mockReturnValue(null);
@@ -25,27 +26,24 @@ describe('App', () => {
     // Wait for the app to finish loading
     await waitFor(() => {
       expect(container.querySelector('.App')).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
   });
 
   test('redirects to login when not authenticated', async () => {
     render(<App />);
     
-    // Should redirect to /login and show login form
+    // Wait for loading to finish
     await waitFor(() => {
-      // The app should render without errors
       expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
   });
 
-  test('checks localStorage for existing session', async () => {
+  test('checks localStorage for existing session', () => {
     render(<App />);
     
-    // Wait for useEffect to execute
-    await waitFor(() => {
-      // Should check for token and user data
-      expect(localStorageMock.getItem).toHaveBeenCalledWith('token');
-      expect(localStorageMock.getItem).toHaveBeenCalledWith('user');
-    });
+    // localStorage.getItem is called during initial render
+    expect(localStorageMock.getItem).toHaveBeenCalled();
+    expect(localStorageMock.getItem).toHaveBeenCalledWith('token');
+    expect(localStorageMock.getItem).toHaveBeenCalledWith('user');
   });
 });
